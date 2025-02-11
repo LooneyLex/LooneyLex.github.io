@@ -1,26 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <meta charset="utf-8">
-        <title>Lex's Library</title> 
-        <p style="font-size: 40px;">Links to all my stuff!</p>
-        <hr align="center" width="50%">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap" rel="stylesheet">
         <style>
+             @font-face { font-family: Splatoon2; src: url('https://frozenpandaman.github.io/Splatoon1.otf'); } 
+             @font-face {font-family: Moonkids; src: url('Moonkids.otf'); }
+             
+            h1{
+                font-size: 40px;
+                text-align: center;
+            }
             body {
-                background-image: url('images/karma police.jpg');
-                width: 100%;
+                background-image: url('images/bradnewbg.png');
+                background-size: 100%;
                 }
             p{
-                text-align: center;
+                text-align: left;
                 text-shadow: #07070870;
-                font-size: large;
+                font-size: larger;
             }
+           
+            s2{
+                text-align: center;
+                font-family: Splatoon2;
+               
+               font-size: 75px;
+            }
+            .button {
+                border: none;
+                color: white;
+                padding: 15px 32px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;
+            }
+            .button1 {background-color: #04AA6D;} /* Green */
+            .button2 {background-color: #008CBA;} /* Blue */
         </style>
+        <title>Lex's Library</title> 
+        <s2>Links to all my stuff!</s2><img 
+        src="images/bitmap.png" 
+        width="50" 
+        height= auto />
+        <hr align="left" width="50%">
+        
     </head>
     <body>
         <p>
-        <a href="aboutme.html" title="About Me">About Me</a>
-        <a href="socialmedia.html" title="My Social Medias">My Social Medias</a>
-        <a href="blog.html" title="My Blog">My Blog</a>
+        <a href="aboutme.html">
+        <button class = "button button1">About me</button>
         </p>
+        <p>
+        <a href="socialmedia.html">
+        <button class = "button button2">Social Media</button>
+        </p>
+        <p>
+        <a href="blog.html">
+        <button class = "button button1">Blog</button>
     </body>
