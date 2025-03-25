@@ -1,0 +1,151 @@
+<!-- I did this with AI just so you don't get your hopes up!-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cool Bank Account</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .bank-account {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 300px;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            width: 100%;
+            font-size: x-large;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .balance {
+            font-size: 1.5em;
+            color: #28a745;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="bank-account">
+        <h1>💰 Cool Bank Account</h1>
+        <p>Welcome, <span id="ownerName"></span>!</p>
+        <div class="balance">Balance: $<span id="balance"></span></div>
+        <input type="number" id="amount" placeholder="Enter amount">
+        <button id="depositBtn">Deposit</button>
+        <button id="withdrawBtn">Withdraw</button>
+        <p id="message"></p>
+    </div>
+
+    <script src="bankAccount.js"></script>
+</body>
+</html>
+<script>
+    class BankAccount {
+    // Private fields, so they can't be interacted outside of how they were intended. AKA using the interface
+    #balance;
+    #accountNumber;
+
+    constructor(accountNumber, ownerName, initialBalance) {
+        this.#accountNumber = accountNumber;
+        this.ownerName = ownerName;
+        this.#balance = initialBalance;
+    }
+
+    // Public method to deposit money. So instead of editing those directly, users have to use my (the AI made) method.
+    deposit(amount) {
+        if (amount > 0) {
+            this.#balance += amount;
+            return `✅ Deposited $${amount}. New balance: $${this.#balance}.`;
+        } else {
+            return '❌ Deposit amount must be positive.';
+        }
+    }
+
+    // Public method to withdraw money
+    withdraw(amount) {
+        if (amount > 0 && amount <= this.#balance) {
+            this.#balance -= amount;
+            return `✅ Withdrew $${amount}. New balance: $${this.#balance}.`;
+        } else {
+            return '❌ Insufficient funds or invalid amount.';
+        }
+    }
+
+    // Public method to get the balance
+    getBalance() {
+        return this.#balance;
+    }
+
+    // Public method to get the account number
+    getAccountNumber() {
+        return this.#accountNumber;
+    }
+}
+
+// DOM Elements
+const ownerNameElement = document.getElementById('ownerName');
+const balanceElement = document.getElementById('balance');
+const amountInput = document.getElementById('amount');
+const depositBtn = document.getElementById('depositBtn');
+const withdrawBtn = document.getElementById('withdrawBtn');
+const messageElement = document.getElementById('message');
+
+// Create a BankAccount instance
+const account = new BankAccount('123456789', 'John Doe', 1000);
+
+// Update UI with initial data
+ownerNameElement.textContent = account.ownerName;
+balanceElement.textContent = account.getBalance();
+
+// Event Listeners
+depositBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountInput.value);
+    if (!isNaN(amount)) {
+        const result = account.deposit(amount);
+        messageElement.textContent = result;
+        balanceElement.textContent = account.getBalance();
+    } else {
+        messageElement.textContent = '❌ Please enter a valid amount.';
+    }
+    amountInput.value = ''; // Clear input
+});
+
+withdrawBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountInput.value);
+    if (!isNaN(amount)) {
+        const result = account.withdraw(amount);
+        messageElement.textContent = result;
+        balanceElement.textContent = account.getBalance();
+    } else {
+        messageElement.textContent = '❌ Please enter a valid amount.';
+    }
+    amountInput.value = ''; // Clear input
+});
+</script>

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Polymorphic Banking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .bank-system {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 300px;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            width: 100%;
+            font-size: x-large;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .balance {
+            font-size: 1.5em;
+            color: #28a745;
+            margin: 20px 0;
+        }
+        .message {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="bank-system">
+        <h1>🏦 Polymorphic Banking</h1>
+        <p>Welcome, <span id="ownerName"></span>!</p>
+        <div class="balance">Balance: $<span id="balance"></span></div>
+        <input type="number" id="amount" placeholder="Enter amount">
+        <button id="depositBtn">Deposit</button>
+        <button id="withdrawBtn">Withdraw</button>
+        <button id="specialActionBtn">Special Action</button>
+        <p id="message" class="message"></p>
+    </div>
+
+    <script src="polymorphicBank.js"></script>
+</body>
+</html>
+<script>
+    // Base Class: BankAccount (Encapsulation)
+class BankAccount {
+    // Private fields
+    #balance;
+    #accountNumber;
+
+    constructor(accountNumber, ownerName, initialBalance) {
+        this.#accountNumber = accountNumber;
+        this.ownerName = ownerName;
+        this.#balance = initialBalance;
+    }
+
+    // Public method to deposit money
+    deposit(amount) {
+        if (amount > 0) {
+            this.#balance += amount;
+            return `✅ Deposited $${amount}. New balance: $${this.#balance}.`;
+        } else {
+            return '❌ Deposit amount must be positive.';
+        }
+    }
+
+    // Public method to withdraw money
+    withdraw(amount) {
+        if (amount > 0 && amount <= this.#balance) {
+            this.#balance -= amount;
+            return `✅ Withdrew $${amount}. New balance: $${this.#balance}.`;
+        } else {
+            return '❌ Insufficient funds or invalid amount.';
+        }
+    }
+
+    // Public method to get the balance
+    getBalance() {
+        return this.#balance;
+    }
+
+    // Public method to get the account number
+    getAccountNumber() {
+        return this.#accountNumber;
+    }
+
+    // Polymorphic method (to be overridden by child classes)
+    specialAction() {
+        return "No special action for this account type.";
+    }
+}
+
+// Derived Class: SavingsAccount (Inheritance)
+class SavingsAccount extends BankAccount {
+    #interestRate;
+
+    constructor(accountNumber, ownerName, initialBalance, interestRate) {
+        super(accountNumber, ownerName, initialBalance); // Call parent constructor
+        this.#interestRate = interestRate;
+    }
+
+    // Override specialAction method (Polymorphism)
+    specialAction() {
+        const interest = this.getBalance() * (this.#interestRate / 100);
+        this.deposit(interest); // Reuse parent method
+        return `💸 Added $${interest.toFixed(2)} interest. New balance: $${this.getBalance()}.`;
+    }
+}
+
+// Derived Class: CheckingAccount (Inheritance)
+class CheckingAccount extends BankAccount {
+    #overdraftLimit;
+
+    constructor(accountNumber, ownerName, initialBalance, overdraftLimit) {
+        super(accountNumber, ownerName, initialBalance); // Call parent constructor
+        this.#overdraftLimit = overdraftLimit;
+    }
+
+    // Override withdraw method (Polymorphism)
+    withdraw(amount) {
+        if (amount > 0 && amount <= (this.getBalance() + this.#overdraftLimit)) {
+            this.deposit(-amount); // Reuse parent method (negative deposit = withdrawal)
+            return `✅ Withdrew $${amount}. New balance: $${this.getBalance()}.`;
+        } else {
+            return '❌ Insufficient funds or invalid amount.';
+        }
+    }
+
+    // Override specialAction method (Polymorphism)
+    specialAction() {
+        return `🏧 Overdraft limit: $${this.#overdraftLimit}.`;
+    }
+}
+
+// DOM Elements
+const ownerNameElement = document.getElementById('ownerName');
+const balanceElement = document.getElementById('balance');
+const amountInput = document.getElementById('amount');
+const depositBtn = document.getElementById('depositBtn');
+const withdrawBtn = document.getElementById('withdrawBtn');
+const specialActionBtn = document.getElementById('specialActionBtn');
+const messageElement = document.getElementById('message');
+
+// Create instances of SavingsAccount and CheckingAccount
+const savingsAccount = new SavingsAccount('123456789', 'John Doe', 1000, 5); // 5% interest rate
+const checkingAccount = new CheckingAccount('987654321', 'Jane Doe', 500, 200); // $200 overdraft limit
+
+// Default account (start with savings account)
+let currentAccount = savingsAccount;
+
+// Update UI with initial data
+updateUI();
+
+// Event Listeners
+depositBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountInput.value);
+    if (!isNaN(amount)) {
+        const result = currentAccount.deposit(amount);
+        messageElement.textContent = result;
+        updateUI();
+    } else {
+        messageElement.textContent = '❌ Please enter a valid amount.';
+    }
+    amountInput.value = ''; // Clear input
+});
+
+withdrawBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountInput.value);
+    if (!isNaN(amount)) {
+        const result = currentAccount.withdraw(amount);
+        messageElement.textContent = result;
+        updateUI();
+    } else {
+        messageElement.textContent = '❌ Please enter a valid amount.';
+    }
+    amountInput.value = ''; // Clear input
+});
+
+specialActionBtn.addEventListener('click', () => {
+    const result = currentAccount.specialAction();
+    messageElement.textContent = result;
+    updateUI();
+});
+
+// Function to update the UI
+function updateUI() {
+    ownerNameElement.textContent = currentAccount.ownerName;
+    balanceElement.textContent = currentAccount.getBalance();
+}
+</script>

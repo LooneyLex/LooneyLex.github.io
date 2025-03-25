@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Banking System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .bank-system {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 300px;
+        }
+        h1 {
+            color: #333;
+        }
+        input {
+            width: 100%;
+            font-size: x-large;
+            margin: 15px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .balance {
+            font-size: 1.5em;
+            color: #28a745;
+            margin: 20px 0;
+        }
+        .message {
+            color: #dc3545;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="bank-system">
+        <h1>🏦 Banking System</h1>
+        <p>Welcome, <span id="ownerName"></span>!</p>
+        <div class="balance">Balance: $<span id="balance"></span></div>
+        <input type="number" id="amount" placeholder="Enter amount">
+        <button id="depositBtn">Deposit</button>
+        <button id="withdrawBtn">Withdraw</button>
+        <button id="addInterestBtn">Add Interest</button>
+        <p id="message" class="message"></p>
+    </div>
+
+    <script src="bankSystem.js"></script>
+</body>
+</html>
+<script>
+    // Parent Class: BankAccount (Encapsulation)
+class BankAccount {
+    // Private fields
+    #balance;
+    #accountNumber;
+
+    constructor(accountNumber, ownerName, initialBalance) {
+        this.#accountNumber = accountNumber;
+        this.ownerName = ownerName;
+        this.#balance = initialBalance;
+    }
+
+    // Public method to deposit money
+    deposit(amount) {
+        if (amount > 0) {
+            this.#balance += amount;
+            return `✅ Deposited $${amount}. New balance: $${this.#balance}.`;
+        } else {
+            return '❌ Deposit amount must be positive.';
+        }
+    }
+
+    // Public method to withdraw money
+    withdraw(amount) {
+        if (amount > 0 && amount <= this.#balance) {
+            this.#balance -= amount;
+            return `✅ Withdrew $${amount}. New balance: $${this.#balance}.`;
+        } else {
+            return '❌ Insufficient funds or invalid amount.';
+        }
+    }
+
+    // Public method to get the balance
+    getBalance() {
+        return this.#balance;
+    }
+
+    // Public method to get the account number
+    getAccountNumber() {
+        return this.#accountNumber;
+    }
+}
+
+// Child Class: SavingsAccount (Inheritance)
+class SavingsAccount extends BankAccount {
+    #interestRate;
+
+    constructor(accountNumber, ownerName, initialBalance, interestRate) {
+        super(accountNumber, ownerName, initialBalance); // Using the parent thingys constructor
+        this.#interestRate = interestRate;
+    }
+
+    // Method to add interest to the balance
+    addInterest() {
+        const interest = this.getBalance() * (this.#interestRate / 100);
+        this.deposit(interest); // Reuse parent method, to desposit the intrest.
+        return `💸 Added $${interest.toFixed(2)} interest. New balance: $${this.getBalance()}.`;
+    }
+}
+
+// DOM Elements
+const ownerNameElement = document.getElementById('ownerName');
+const balanceElement = document.getElementById('balance');
+const amountInput = document.getElementById('amount');
+const depositBtn = document.getElementById('depositBtn');
+const withdrawBtn = document.getElementById('withdrawBtn');
+const addInterestBtn = document.getElementById('addInterestBtn');
+const messageElement = document.getElementById('message');
+
+// Create a SavingsAccount instance
+const savingsAccount = new SavingsAccount('123456789', 'John Doe', 1000, 5); // 5% interest rate
+
+// Update UI with initial data
+ownerNameElement.textContent = savingsAccount.ownerName;
+balanceElement.textContent = savingsAccount.getBalance();
+
+// Event Listeners
+depositBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountInput.value);
+    if (!isNaN(amount)) {
+        const result = savingsAccount.deposit(amount);
+        messageElement.textContent = result;
+        balanceElement.textContent = savingsAccount.getBalance();
+    } else {
+        messageElement.textContent = '❌ Please enter a valid amount.';
+    }
+    amountInput.value = ''; // Clear input
+});
+
+withdrawBtn.addEventListener('click', () => {
+    const amount = parseFloat(amountInput.value);
+    if (!isNaN(amount)) {
+        const result = savingsAccount.withdraw(amount);
+        messageElement.textContent = result;
+        balanceElement.textContent = savingsAccount.getBalance();
+    } else {
+        messageElement.textContent = '❌ Please enter a valid amount.';
+    }
+    amountInput.value = ''; // Clear input
+});
+
+addInterestBtn.addEventListener('click', () => {
+    const result = savingsAccount.addInterest();
+    messageElement.textContent = result;
+    balanceElement.textContent = savingsAccount.getBalance();
+});
+</script>
