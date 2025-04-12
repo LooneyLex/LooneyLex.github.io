@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Cool Stuff Playground</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #ff6b6b;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            font-size: 3em;
+            margin-bottom: 30px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .box {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+            min-height: 200px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
+        
+        button:hover {
+            background: #ff8e8e;
+            transform: scale(1.05);
+        }
+        
+        .particle {
+            position: absolute;
+            background: #ff6b6b;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        
+        #drawingCanvas {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            background: white;
+            cursor: crosshair;
+            display: block;
+            margin: 10px auto;
+        }
+        
+        #colorDisplay {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 10px auto;
+            border: 3px solid #333;
+            transition: background 0.3s;
+        }
+        
+        #typingEffect {
+            min-height: 60px;
+            border-left: 3px solid #ff6b6b;
+            padding-left: 10px;
+            font-size: 18px;
+        }
+        
+        #confettiButton {
+            background: linear-gradient(45deg, #ff6b6b, #ffa3a3);
+        }
+        
+        #gravityBox {
+            height: 200px;
+            position: relative;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        
+        .ball {
+            position: absolute;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        
+        #soundButtons button {
+            margin: 5px;
+            background: #4ecdc4;
+        }
+        
+        #soundButtons button:hover {
+            background: #88d8d0;
+        }
+        
+        #matrixCanvas {
+            background: black;
+            border-radius: 10px;
+            display: block;
+            margin: 10px auto;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Cool Stuff Playground</h1>
+    
+    <div class="container">
+        <!-- Particle Generator -->
+        <div class="box">
+            <h2>Particle Explosion</h2>
+            <p>Click the button to create a colorful particle explosion!</p>
+            <button id="particleButton">Generate Particles</button>
+        </div>
+        
+        <!-- Drawing Canvas -->
+        <div class="box">
+            <h2>Doodle Pad</h2>
+            <p>Draw something amazing on this canvas!</p>
+            <canvas id="drawingCanvas" width="280" height="150"></canvas>
+            <button id="clearCanvas">Clear Drawing</button>
+        </div>
+        
+        <!-- Color Mixer -->
+        <div class="box">
+            <h2>Color Mixer</h2>
+            <p>Adjust the sliders to create your own color:</p>
+            <div id="colorDisplay"></div>
+            <p>Red: <input type="range" id="redSlider" min="0" max="255" value="120"></p>
+            <p>Green: <input type="range" id="greenSlider" min="0" max="255" value="80"></p>
+            <p>Blue: <input type="range" id="blueSlider" min="0" max="255" value="200"></p>
+        </div>
+        
+        <!-- Typing Effect -->
+        <div class="box">
+            <h2>Typewriter Effect</h2>
+            <p>Enter text and watch it appear like an old typewriter:</p>
+            <input type="text" id="typingInput" placeholder="Type something...">
+            <button id="typeButton">Type It Out!</button>
+            <div id="typingEffect"></div>
+        </div>
+        
+        <!-- Confetti Cannon -->
+        <div class="box">
+            <h2>Confetti Cannon</h2>
+            <p>Celebrate something! Launch confetti everywhere!</p>
+            <button id="confettiButton">Launch Confetti</button>
+        </div>
+        
+        <!-- Gravity Simulator -->
+        <div class="box">
+            <h2>Gravity Playground</h2>
+            <p>Click in the box to create balls that obey gravity!</p>
+            <div id="gravityBox"></div>
+            <button id="clearBalls">Clear Balls</button>
+        </div>
+        
+        <!-- Sound Board -->
+        <div class="box">
+            <h2>Sound Board</h2>
+            <p>Play some fun sounds:</p>
+            <div id="soundButtons">
+                <button class="sound" data-sound="boing">Boing</button>
+                <button class="sound" data-sound="laser">Laser</button>
+                <button class="sound" data-sound="pop">Pop</button>
+                <button class="sound" data-sound="success">Success</button>
+            </div>
+        </div>
+        
+        <!-- Matrix Effect -->
+        <div class="box">
+            <h2>Matrix Rain</h2>
+            <p>Watch the digital rain from The Matrix:</p>
+            <canvas id="matrixCanvas" width="280" height="150"></canvas>
+            <button id="toggleMatrix">Toggle Effect</button>
+        </div>
+    </div>
+    
+    <script>
+        // Particle Generator
+        document.getElementById('particleButton').addEventListener('click', function() {
+            const box = this.parentElement;
+            const colors = ['#ff6b6b', '#4ecdc4', '#45aaf2', '#a55eea', '#f7b731'];
+            
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.classList.add('particle');
+                
+                // Random properties
+                const size = Math.random() * 20 + 5;
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.background = color;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.top = `${Math.random() * 100}%`;
+                
+                box.appendChild(particle);
+                
+                // Animate
+                const animation = particle.animate([
+                    { transform: 'translate(0, 0) scale(1)', opacity: 1 },
+                    { transform: `translate(${Math.random() * 200 - 100}px, ${Math.random() * 200 - 100}px) scale(0)`, opacity: 0 }
+                ], {
+                    duration: Math.random() * 1000 + 1000,
+                    easing: 'cubic-bezier(0,0.2,0.8,1)'
+                });
+                
+                animation.onfinish = () => particle.remove();
+            }
+        });
+        
+        // Drawing Canvas
+        const canvas = document.getElementById('drawingCanvas');
+        const ctx = canvas.getContext('2d');
+        let isDrawing = false;
+        
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        
+        document.getElementById('clearCanvas').addEventListener('click', function() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        });
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            draw(e);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            
+            ctx.lineWidth = 5;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = `hsl(${Math.random() * 360}, 80%, 60%)`;
+            
+            ctx.lineTo(e.offsetX, e.offsetY);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(e.offsetX, e.offsetY);
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+            ctx.beginPath();
+        }
+        
+        // Color Mixer
+        const redSlider = document.getElementById('redSlider');
+        const greenSlider = document.getElementById('greenSlider');
+        const blueSlider = document.getElementById('blueSlider');
+        const colorDisplay = document.getElementById('colorDisplay');
+        
+        function updateColor() {
+            const r = redSlider.value;
+            const g = greenSlider.value;
+            const b = blueSlider.value;
+            colorDisplay.style.background = `rgb(${r}, ${g}, ${b})`;
+        }
+        
+        redSlider.addEventListener('input', updateColor);
+        greenSlider.addEventListener('input', updateColor);
+        blueSlider.addEventListener('input', updateColor);
+        updateColor(); // Initialize
+        
+        // Typing Effect
+        document.getElementById('typeButton').addEventListener('click', function() {
+            const text = document.getElementById('typingInput').value;
+            const typingEffect = document.getElementById('typingEffect');
+            typingEffect.textContent = '';
+            
+            let i = 0;
+            const typing = setInterval(() => {
+                if (i < text.length) {
+                    typingEffect.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typing);
+                }
+            }, 100);
+        });
+        
+        // Confetti Cannon
+        document.getElementById('confettiButton').addEventListener('click', function() {
+            const confettiSettings = { target: 'confettiButton', size: 1.5, animate: true, colors: [[255, 107, 107], [78, 205, 196], [255, 183, 49], [69, 170, 242]] };
+            const confetti = new ConfettiGenerator(confettiSettings);
+            confetti.render();
+            
+            setTimeout(() => {
+                confetti.clear();
+            }, 3000);
+        });
+        
+        // Load confetti library dynamically
+        const confettiScript = document.createElement('script');
+        confettiScript.src = 'https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js';
+        document.head.appendChild(confettiScript);
+        
+        // Gravity Playground
+        const gravityBox = document.getElementById('gravityBox');
+        let balls = [];
+        let gravity = 0.2;
+        let friction = 0.99;
+        
+        gravityBox.addEventListener('click', function(e) {
+            const ball = document.createElement('div');
+            ball.classList.add('ball');
+            
+            const size = Math.random() * 30 + 20;
+            const color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+            
+            ball.style.width = `${size}px`;
+            ball.style.height = `${size}px`;
+            ball.style.background = color;
+            ball.style.left = `${e.offsetX - size/2}px`;
+            ball.style.top = `${e.offsetY - size/2}px`;
+            
+            gravityBox.appendChild(ball);
+            
+            const ballObj = {
+                element: ball,
+                x: e.offsetX - size/2,
+                y: e.offsetY - size/2,
+                vx: (Math.random() - 0.5) * 10,
+                vy: (Math.random() - 0.5) * 10,
+                size: size
+            };
+            
+            balls.push(ballObj);
+        });
+        
+        document.getElementById('clearBalls').addEventListener('click', function() {
+            balls.forEach(ball => ball.element.remove());
+            balls = [];
+        });
+        
+        function updateBalls() {
+            balls.forEach(ball => {
+                // Apply gravity
+                ball.vy += gravity;
+                
+                // Apply friction
+                ball.vx *= friction;
+                ball.vy *= friction;
+                
+                // Update position
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                
+                // Check boundaries
+                if (ball.x + ball.size > gravityBox.offsetWidth) {
+                    ball.x = gravityBox.offsetWidth - ball.size;
+                    ball.vx *= -0.8;
+                }
+                if (ball.x < 0) {
+                    ball.x = 0;
+                    ball.vx *= -0.8;
+                }
+                if (ball.y + ball.size > gravityBox.offsetHeight) {
+                    ball.y = gravityBox.offsetHeight - ball.size;
+                    ball.vy *= -0.8;
+                }
+                if (ball.y < 0) {
+                    ball.y = 0;
+                    ball.vy *= -0.8;
+                }
+                
+                // Update DOM
+                ball.element.style.left = `${ball.x}px`;
+                ball.element.style.top = `${ball.y}px`;
+            });
+            
+            requestAnimationFrame(updateBalls);
+        }
+        
+        updateBalls();
+        
+        // Sound Board
+        const sounds = {
+            boing: 'https://assets.mixkit.co/sfx/preview/mixkit-boing-arcade-game-1084.mp3',
+            laser: 'https://assets.mixkit.co/sfx/preview/mixkit-laser-weapon-shot-1680.mp3',
+            pop: 'https://assets.mixkit.co/sfx/preview/mixkit-arcade-game-jump-coin-216.mp3',
+            success: 'https://assets.mixkit.co/sfx/preview/mixkit-achievement-bell-600.mp3'
+        };
+        
+        document.querySelectorAll('.sound').forEach(button => {
+            button.addEventListener('click', function() {
+                const soundName = this.getAttribute('data-sound');
+                const audio = new Audio(sounds[soundName]);
+                audio.play();
+            });
+        });
+        
+        // Matrix Effect
+        const matrixCanvas = document.getElementById('matrixCanvas');
+        const matrixCtx = matrixCanvas.getContext('2d');
+        let matrixActive = false;
+        
+        matrixCanvas.width = matrixCanvas.offsetWidth;
+        matrixCanvas.height = matrixCanvas.offsetHeight;
+        
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        
+        const alphabet = katakana + latin + nums;
+        
+        const fontSize = 16;
+        const columns = matrixCanvas.width / fontSize;
+        
+        const rainDrops = [];
+        
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+        
+        function drawMatrix() {
+            if (!matrixActive) return;
+            
+            matrixCtx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            matrixCtx.fillRect(0, 0, matrixCanvas.width, matrixCanvas.height);
+            
+            matrixCtx.fillStyle = '#0f0';
+            matrixCtx.font = fontSize + 'px monospace';
+            
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                matrixCtx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+                
+                if (rainDrops[i] * fontSize > matrixCanvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+            
+            requestAnimationFrame(drawMatrix);
+        }
+        
+        document.getElementById('toggleMatrix').addEventListener('click', function() {
+            matrixActive = !matrixActive;
+            if (matrixActive) {
+                drawMatrix();
+                this.textContent = 'Stop Effect';
+            } else {
+                this.textContent = 'Start Effect';
+            }
+        });
+        
+        // Responsive canvas resize
+        window.addEventListener('resize', function() {
+            canvas.width = canvas.offsetWidth;
+            canvas.height = canvas.offsetHeight;
+            
+            matrixCanvas.width = matrixCanvas.offsetWidth;
+            matrixCanvas.height = matrixCanvas.offsetHeight;
+        });
+    </script>
+</body>
+</html>

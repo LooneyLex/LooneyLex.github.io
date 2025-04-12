@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="bootstrap-5.3.5-dist/css/bootstrap-reboot.min.css">
+    <link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
+    <link href="http://fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
+    <title>Lex's Fun Little Site</title>
+    <style>
+        #hiddenButton {
+            font-family: 'Nobile', Helvetica, Arial, sans-serif;
+            display: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: not-allowed;
+            opacity: 0.5;
+            background-color: var(black);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid var(red);
+            box-shadow: 0 0 4px var(red);
+            perspective: 1000px;
+            position: relative !important;
+            overflow: hidden;
+        }
+        #visibleButton {
+            font-family: 'Nobile', Helvetica, Arial, sans-serif;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            position: relative !important;
+            background-color: var(black);
+            border-radius: 6px;
+            font-size: 0.875rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border: 1px solid var(red);
+            box-shadow: 0 0 4px var(red);
+            cursor: pointer;
+            perspective: 1000px;
+            overflow: hidden;
+        }
+        .interactable {
+            display: inline-block !important;
+            cursor: pointer !important;
+            opacity: 1 !important;
+            position: relative !important;
+
+        }
+        h1{
+            font-family: 'Corben', Georgia, Times, serif;
+            text-shadow: 1px 1px 1px #ccc;
+            text-align: center;
+
+        }
+        p, div {
+            font-family: 'Nobile', Helvetica, Arial, sans-serif !important;
+            text-align: center !important
+        }
+        body { 
+            background: url(vintage-wallpaper.png);
+        }
+         
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .box {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            padding: 20px;
+            width: 300px;
+            min-height: 200px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+        }
+        button {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            margin: 10px 0;
+        }
+        
+        button:hover {
+            background: #ff8e8e;
+            transform: scale(1.05);
+        }
+        #gravityBox {
+            height: 200px;
+            position: relative;
+            background: #f0f0f0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .ball {
+            position: relative;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .color-mixer-container {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateY(-10px);
+        }
+            .color-mixer-container.visible {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+    </style>
+</head>
+<body>
+    <noscript>
+        <p>
+            Hey, your browser has JavaScript turned off! Please turn it on. It would be so awesome. It would be so cool. It would be the most incredible and super fun website, the world has ever seen! The screen would light up, with real js, and special js, like tons and tons of, special js, my super sweet code would be special js, and it would blow your mindddddd!
+       </p> 
+    </noscript>
+    <script src="bootstrap-5.3.5-dist/js/bootstrap.min.js"></script>
+    <script>
+        let firstName;
+        do{
+            firstName = prompt("Please tell me your first name:");
+        }while(firstName == null || input == "" );
+    </script>
+    <script>
+        alert("Ok well, whatever you do " + firstName + " don't press that freaking button.");
+    </script>
+    <h1 id="header">Cool Site</h1>
+    <p>
+        <button id="visibleButton">Hi. Don't click me</button>
+        <button id="hiddenButton">Don't press me</button>
+        <div class="box" id="gravBox">
+            <h2 id="gravPlayground">Gravity Playground</h2>
+            <p id="clickBalls">Click in the box to create balls that obey gravity!</p>
+            <div id="gravityBox"></div>
+            <button id="clearBalls">Clear Balls</button>
+        </div>
+        
+    </p>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const visibleButton = document.getElementById('visibleButton');
+            
+            visibleButton.addEventListener('click', function() {
+                alert("Bro what did I tell you? I'm taking away the freaking ball thing AND the button.");
+                visibleButton.remove();
+                gravBox.remove();
+                document.body.appendChild(hiddenButton);              
+                alert("How you like them apples, " + firstName +"? Have fun being BORED!");
+                header.innerText = "Not So Cool Site";
+                setTimeout(() => {
+                    alert("Ok... Well now I'm kinda bored. So... Uh... Here I have to put the button back, but press some of these other ones instead!");
+                    hiddenButton.classList.add('interactable');
+                    header.innerText = "Back to Being Cool Site"
+                }, 5000); // 5 seconds
+                
+            });
+            hiddenButton.addEventListener('click', function() {
+                alert("Alright, so you're getting on my neves.");
+                alert("How about this? Look now you can't POSSIBLY be bored enough to click that darn button.");
+            });
+        });
+        // Gravity Playground
+        const gravityBox = document.getElementById('gravityBox');
+        let balls = [];
+        let gravity = 0.5;
+        let friction = 0.99;
+        
+        gravityBox.addEventListener('click', function(e) {
+            const ball = document.createElement('div');
+            ball.classList.add('ball');
+            //ball size
+            const size = Math.random() * 30 + 20;
+            //ball color
+            const color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+            ball.style.width = `${size}px`;
+            ball.style.height = `${size}px`;
+            ball.style.background = color;
+            ball.style.left = `${e.offsetX - size/2}px`;
+            ball.style.top = `${e.offsetY - size/2}px`;
+            
+            gravityBox.appendChild(ball);
+            
+            const ballObj = {
+                element: ball,
+                x: e.offsetX - size/2,
+                y: e.offsetY - size/2,
+                vx: (Math.random() - 0.5) * 10,
+                vy: (Math.random() - 0.5) * 10,
+                size: size
+            };
+            
+            balls.push(ballObj);
+        });
+        //just a forloop to get rid of balls
+        document.getElementById('clearBalls').addEventListener('click', function() {
+            balls.forEach(ball => ball.element.remove());
+            balls = [];
+        });
+        
+        function updateBalls() {
+            balls.forEach(ball => {
+                // Apply gravity
+                ball.vy += gravity;
+                
+                // Apply friction
+                ball.vx *= friction;
+                ball.vy *= friction;
+                
+                // Update position
+                ball.x += ball.vx;
+                ball.y += ball.vy;
+                
+                // Check boundaries
+                if (ball.x + ball.size > gravityBox.offsetWidth) {
+                    ball.x = gravityBox.offsetWidth - ball.size;
+                    ball.vx *= -0.8;
+                }
+                if (ball.x < 0) {
+                    ball.x = 0;
+                    ball.vx *= -0.8;
+                }
+                if (ball.y + ball.size > gravityBox.offsetHeight) {
+                    ball.y = gravityBox.offsetHeight - ball.size;
+                    ball.vy *= -0.8;
+                }
+                if (ball.y < 0) {
+                    ball.y = 0;
+                    ball.vy *= -0.8;
+                }
+                
+                // Update DOM
+                ball.element.style.left = `${ball.x}px`;
+                ball.element.style.top = `${ball.y}px`;
+            });
+            
+            requestAnimationFrame(updateBalls);
+        }
+        
+        updateBalls();
+    </script>
+</body>
+</html>
