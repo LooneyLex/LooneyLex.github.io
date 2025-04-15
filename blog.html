@@ -2,50 +2,97 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Special+Gothic+Condensed+One&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&family=Jost:ital,wght@0,100..900;1,100..900&family=Merriweather:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700;1,900&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@200..700&family=Special+Gothic+Condensed+One&family=Special+Gothic+Expanded+One&display=swap" rel="stylesheet">
         <title>The Blog.</title> 
         <p style="font-size: 40px;">Low and Behold, It's a BLOG!</p>
-        <hr align="center" width="50%">
+        <hr-align="center" width="50%">
         <style>
-            body {
-                background-color: aquamarine;
-                }
+            body{
+                background-image: url(images/checkerboard-cross.png);
+            }
             p{
                 text-align: center;
                 text-shadow: #07070870;
                 font-size: large;
+                font-family: "Jost", sans-serif;
+
             }
             h1{
                 text-align: center;
                 font-size: larger;
                 text-decoration: underline;
+                font-family: "Jost", sans-serif;
+            }
+            button{
+                background: #ff6b6b;
+                color: white;
+                border: black;
+                padding: 10px 20px;
+                border-radius: 50px;
+                cursor: pointer;
+                font-size: 20px;
+                transition: all 0.3s ease;
+                margin: 10px 0;
+                position: center;
+            }
+            .button:hover {
+                background: #ff8e8e;
+                transform: scale(1.05);
+            }
+            .jost{
+                font-family: "Jost", sans-serif;
+                font-optical-sizing: auto;
+                font-weight: 400;
+                font-style: normal;
+            }
+            section{
+                position: center !important;
             }
             
         </style>
     </head>
     <body>
-        <h1> I'll tag things for the class with a <b>NT:</b> for New Testament. Everything else will be tagged with <b>BS:</b> which stands for b-random stuff. 1</h1>
-        <a href="ntassignments/nta1.html" title="NT Assignment 1">NT 1 1/28/25</a>
-        <p></p>
-        <a href="ntassignments/nta2.html" title="NT Assignment 2">NT 2 1/30/25</a>   
-        <p></p>
-        <a href="ntassignments/nta3.html" title="NT Assignment 3">NT 3 2/1/25</a>   
-        <p></p>
-        <a href="ntassignments/nta4.html" title="NT Assignment 4">NT 4 2/8/25</a>
-        <p></p>
-        <a href="ntassignments/nta5.html" title="NT Assignment 5">NT 5 2/15/25</a>
-        <p></p>
-        <a href="ntassignments/nta6.html" title="NT Assignment 6">NT 6 3/9/25</a>
-        <p></p>
-        <a href="ntassignments/nta7.html" title="NT Assignment 7">NT 7 3/15/25</a>
-        <p></p>
-        <a href="ntassignments/nta8.html" title="NT Assignment 8">NT 8 3/22/25</a>
-        <p></p> 
-        <a href="ntassignments/nta9.html" title="NT Assignment 9">NT 9 3/29/25</a>
-        <p></p> 
-        <a href="ntassignments/nta10.html" title="NT Assignment 10">NT 10 4/5/25</a>
-        <p></p>
-        <a href="ntassignments/nta11.html" title="NT Assignment 11">NT 11 4/12/25</a>
-        <p></p>  
-
-   
+        <!-- <section>
+            <h1><a href="ntassignments/nta_.html"> <button class = "button" title="NT Assignment _">NT _ _/__/__</a></button></h1>
+        </section> -->
+        <h1> I'll tag things for the class with a <b>NT:</b> for New Testament.</h1>
+            <h1>Everything else will be tagged with <b>BS:</b> which stands for b-random stuff. 1</h1>
+        <section>
+            <h1><a href="ntassignments/nta1.html"> <button class = "button" title="NT Assignment 1">NT 1 1/28/25</a></button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta2.html"> <button class = "button" title="NT Assignment 2">NT 2 1/30/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta3.html"> <button class = "button" title="NT Assignment 3">NT3 2/1/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta4.html"> <button class = "button" title="NT Assignment 4">NT4 2/8/25</button></a></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta5.html"> <button class = "button" title="NT Assignment 5">NT5 2/15/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta6.html"> <button class = "button" title="NT Assignment 6">NT6 3/9/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta7.html"> <button class = "button" title="NT Assignment 7">NT7 3/15/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta8.html"> <button class = "button" title="NT Assignment 8">NT8 3/22/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta9.html"> <button class = "button" title="NT Assignment 9">NT9 3/29/25</button></h1>
+        </section>
+        <section>
+            <h1><a href="ntassignments/nta10.html"> <button class = "button" title="NT Assignment 10">NT10 4/5/25</button></h1>
+        </section> 
+        <section>
+            <h1><a href="ntassignments/nta11.html"> <button class = "button" title="NT Assignment 11">NT3 4/12/25</button></h1>
+        </section>
     </body>
