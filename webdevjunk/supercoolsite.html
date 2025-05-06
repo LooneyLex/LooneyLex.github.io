@@ -6,8 +6,9 @@
     <link rel="stylesheet" href="bootstrap-5.3.5-dist/css/bootstrap-reboot.min.css">
     <link href="http://fonts.googleapis.com/css?family=Corben:bold" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Nobile" rel="stylesheet" type="text/css">
-    <title>Lex's Fun Little Site</title>
+    <title>Lex's Super Fun Site</title>
     <style>
+        /* Existing styles... */
         #hiddenButton {
             font-family: 'Nobile', Helvetica, Arial, sans-serif;
             display: none;
@@ -48,22 +49,27 @@
             cursor: pointer !important;
             opacity: 1 !important;
             position: relative !important;
-
         }
-        h1{
+        h1 {
             font-family: 'Corben', Georgia, Times, serif;
             text-shadow: 1px 1px 1px #ccc;
             text-align: center;
-
         }
         p, div {
             font-family: 'Nobile', Helvetica, Arial, sans-serif !important;
-            text-align: center !important
+            text-align: center !important;
+            position: static;
         }
         body { 
             background: url(vintage-wallpaper.png);
+            transition: all 0.5s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
         }
-         
         .container {
             display: flex;
             flex-wrap: wrap;
@@ -71,6 +77,8 @@
             gap: 20px;
             max-width: 1200px;
             margin: 0 auto;
+            position: relative;
+            width: 100%;
         }
         .box {
             background: white;
@@ -83,7 +91,6 @@
             position: relative;
             overflow: hidden;
         }
-        
         .box:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 30px rgba(0,0,0,0.2);
@@ -97,24 +104,29 @@
             cursor: pointer;
             font-size: 16px;
             transition: all 0.3s ease;
-            margin: 10px 0;
+            margin: 10px auto;
+            display: block;
         }
-        
         button:hover {
             background: #ff8e8e;
             transform: scale(1.05);
         }
         #gravityBox {
             height: 200px;
-            position: relative;
             background: #f0f0f0;
             border-radius: 10px;
             overflow: hidden;
+            margin: 0 auto;
+            position: relative;
         }
         .ball {
-            position: relative;
+            position: absolute;
             border-radius: 50%;
             cursor: pointer;
+            transition: transform 0.1s;
+        }
+        .ball:hover {
+            transform: scale(1.1);
         }
         .color-mixer-container {
             display: none;
@@ -122,12 +134,71 @@
             transition: opacity 0.3s ease, transform 0.3s ease;
             transform: translateY(-10px);
         }
-            .color-mixer-container.visible {
+        .color-mixer-container.visible {
             display: block;
             opacity: 1;
             transform: translateY(0);
         }
-        
+        .color-sliders {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        .color-sliders > div {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .color-display {
+            width: 100%;
+            height: 50px;
+            border-radius: 8px;
+            margin: 10px auto;
+            border: 1px solid #ddd;
+        }
+        #drawingCanvas {
+            width: 100%;
+            height: 200px;
+            background: #f8f8f8;
+            border-radius: 10px;
+            cursor: crosshair;
+            touch-action: none;
+            display: block;
+            margin: 0 auto;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .mode-active {
+            background: #4CAF50 !important;
+            color: white;
+        }
+        .rage-mode {
+            animation: shake 0.5s infinite;
+        }
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -139,81 +210,286 @@
     <script src="bootstrap-5.3.5-dist/js/bootstrap.min.js"></script>
     <script>
         let firstName;
-        do{
+        do {
             firstName = prompt("Please tell me your first name:");
-        }while(firstName == null || input == "" );
-    </script>
-    <script>
-        alert("Ok well, whatever you do " + firstName + " don't press that freaking button.");
+        } while(firstName == null || firstName == "");
+
+        alert(`Ok well, whatever you do ${firstName} don't press that freaking button.`);
     </script>
     <h1 id="header">Cool Site</h1>
-    <p>
+    
+    <div class="button-container">
         <button id="visibleButton">Hi. Don't click me</button>
         <button id="hiddenButton">Don't press me</button>
+    </div>
+    
+    <div class="container">
         <div class="box" id="gravBox">
             <h2 id="gravPlayground">Gravity Playground</h2>
             <p id="clickBalls">Click in the box to create balls that obey gravity!</p>
             <div id="gravityBox"></div>
-            <button id="clearBalls">Clear Balls</button>
+            <div class="controls">
+                <button id="clearBalls">Clear Balls</button>
+                <button id="rageMode">Rage Mode: OFF</button>
+            </div>
         </div>
         
-    </p>
+        <div class="box" id="colorBox">
+            <h2>Color Mixer</h2>
+            <p>Create your own color and apply it to new balls!</p>
+            <div class="color-display" id="colorDisplay"></div>
+            <div class="color-sliders">
+                <div>
+                    <label for="redSlider">Red:</label>
+                    <input type="range" id="redSlider" min="0" max="255" value="100">
+                    <span id="redValue">100</span>
+                </div>
+                <div>
+                    <label for="greenSlider">Green:</label>
+                    <input type="range" id="greenSlider" min="0" max="255" value="150">
+                    <span id="greenValue">150</span>
+                </div>
+                <div>
+                    <label for="blueSlider">Blue:</label>
+                    <input type="range" id="blueSlider" min="0" max="255" value="200">
+                    <span id="blueValue">200</span>
+                </div>
+            </div>
+            <button id="applyColor">Use This Color</button>
+        </div>
+        
+        <div class="box" id="drawBox">
+            <h2>Doodle Pad</h2>
+            <p>Draw something silly!</p>
+            <canvas id="drawingCanvas"></canvas>
+            <div class="controls">
+                <button id="clearDrawing">Clear</button>
+                <button id="thickLine">Thick Lines</button>
+            </div>
+        </div>
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const visibleButton = document.getElementById('visibleButton');
+            const hiddenButton = document.getElementById('hiddenButton');
             
             visibleButton.addEventListener('click', function() {
-                alert("Bro what did I tell you? I'm taking away the freaking ball thing AND the button.");
+                alert("Bro what did I tell you? I'm taking away EVRYTHING.");
                 visibleButton.remove();
-                gravBox.remove();
+                document.getElementById('gravBox').remove();
+                document.getElementById('drawBox').remove();
+                document.getElementById('colorBox').remove();
+
                 document.body.appendChild(hiddenButton);              
-                alert("How you like them apples, " + firstName +"? Have fun being BORED!");
-                header.innerText = "Not So Cool Site";
+                alert(`How you like them apples, ${firstName}? Have fun being BORED!`);
+                document.getElementById('header').innerText = "Not So Cool Site";
                 setTimeout(() => {
                     alert("Ok... Well now I'm kinda bored. So... Uh... Here I have to put the button back, but press some of these other ones instead!");
                     hiddenButton.classList.add('interactable');
-                    header.innerText = "Back to Being Cool Site"
-                }, 5000); // 5 seconds
-                
+                    document.getElementById('header').innerText = "Back to Being Cool Site";
+                }, 5000);
             });
+            
             hiddenButton.addEventListener('click', function() {
-                alert("Alright, so you're getting on my neves.");
+                playSound('click');
+                alert("Alright, so you're getting on my nerves.");
                 alert("How about this? Look now you can't POSSIBLY be bored enough to click that darn button.");
             });
+            
+            // Color mixer functionality
+            const redSlider = document.getElementById('redSlider');
+            const greenSlider = document.getElementById('greenSlider');
+            const blueSlider = document.getElementById('blueSlider');
+            const colorDisplay = document.getElementById('colorDisplay');
+            const redValue = document.getElementById('redValue');
+            const greenValue = document.getElementById('greenValue');
+            const blueValue = document.getElementById('blueValue');
+            const applyColorBtn = document.getElementById('applyColor');
+            
+            let currentColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+            
+            function updateColor() {
+                currentColor = `rgb(${redSlider.value}, ${greenSlider.value}, ${blueSlider.value})`;
+                colorDisplay.style.backgroundColor = currentColor;
+                redValue.textContent = redSlider.value;
+                greenValue.textContent = greenSlider.value;
+                blueValue.textContent = blueSlider.value;
+            }
+            
+            redSlider.addEventListener('input', updateColor);
+            greenSlider.addEventListener('input', updateColor);
+            blueSlider.addEventListener('input', updateColor);
+            applyColorBtn.addEventListener('click', () => {
+                alert(`Nice color choice,! New balls will be ${currentColor}`);
+            });
+            
+            updateColor();
+            
+            // Drawing canvas
+            const canvas = document.getElementById('drawingCanvas');
+            const ctx = canvas.getContext('2d');
+            const clearDrawingBtn = document.getElementById('clearDrawing');
+            const thickLineBtn = document.getElementById('thickLine');
+            
+            // Set canvas size properly
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            
+            let isDrawing = false;
+            let lastX = 0;
+            let lastY = 0;
+            
+            canvas.addEventListener('mousedown', startDrawing);
+            canvas.addEventListener('touchstart', handleTouchStart);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('touchmove', handleTouchMove);
+            canvas.addEventListener('mouseup', stopDrawing);
+            canvas.addEventListener('touchend', stopDrawing);
+            canvas.addEventListener('mouseout', stopDrawing);
+            
+            function startDrawing(e) {
+                isDrawing = true;
+                [lastX, lastY] = getPosition(e);
+                playSound('click');
+            }
+            
+            function handleTouchStart(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousedown', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                startDrawing(mouseEvent);
+            }
+            
+            function draw(e) {
+                if (!isDrawing) return;
+                
+                const [x, y] = getPosition(e);
+                
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                
+                lastX = x;
+                lastY = y;
+            }
+            
+            function handleTouchMove(e) {
+                e.preventDefault();
+                const touch = e.touches[0];
+                const mouseEvent = new MouseEvent('mousemove', {
+                    clientX: touch.clientX,
+                    clientY: touch.clientY
+                });
+                draw(mouseEvent);
+            }
+            
+            function stopDrawing() {
+                isDrawing = false;
+            }
+            
+            function getPosition(e) {
+                const rect = canvas.getBoundingClientRect();
+                return [
+                    e.clientX - rect.left,
+                    e.clientY - rect.top
+                ];
+            }
+            
+            clearDrawingBtn.addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                playSound('click');
+            });
+            
+            let thickLines = false;
+            thickLineBtn.addEventListener('click', () => {
+                thickLines = !thickLines;
+                ctx.lineWidth = thickLines ? 8 : 2;
+                thickLineBtn.textContent = thickLines ? 'Thin Lines' : 'Thick Lines';
+                thickLineBtn.classList.toggle('mode-active', thickLines);
+                playSound('click');
+            });
         });
+        
         // Gravity Playground
         const gravityBox = document.getElementById('gravityBox');
+        // all the stuff
         let balls = [];
         let gravity = 0.5;
         let friction = 0.99;
+        let rageMode = false;
+        let ballColor = null;
+        //this is if you wanna change the color of the balls with that color slider
+        document.getElementById('applyColor').addEventListener('click', function() {
+            const red = document.getElementById('redSlider').value;
+            const green = document.getElementById('greenSlider').value;
+            const blue = document.getElementById('blueSlider').value;
+            ballColor = `rgb(${red}, ${green}, ${blue})`;
+        });
+        //stuff shakes
+        document.getElementById('rageMode').addEventListener('click', function() {
+            rageMode = !rageMode;
+            this.textContent = `Rage Mode: ${rageMode ? 'ON' : 'OFF'}`;
+            this.classList.toggle('mode-active', rageMode);
+            if (rageMode) {
+                gravityBox.classList.add('rage-mode');
+            } else {
+                gravityBox.classList.remove('rage-mode');
+            }
+        });
         
         gravityBox.addEventListener('click', function(e) {
+            playSound('click');
             const ball = document.createElement('div');
             ball.classList.add('ball');
-            //ball size
+            
             const size = Math.random() * 30 + 20;
-            //ball color
-            const color = `hsl(${Math.random() * 360}, 80%, 60%)`;
+            const color = ballColor || `hsl(${Math.random() * 360}, 80%, 60%)`;
+            
             ball.style.width = `${size}px`;
             ball.style.height = `${size}px`;
             ball.style.background = color;
-            ball.style.left = `${e.offsetX - size/2}px`;
-            ball.style.top = `${e.offsetY - size/2}px`;
+            
+            // Ensure ball is created within bounds
+            let x = Math.max(0, Math.min(e.offsetX - size/2, gravityBox.offsetWidth - size));
+            let y = Math.max(0, Math.min(e.offsetY - size/2, gravityBox.offsetHeight - size));
+            
+            ball.style.left = `${x}px`;
+            ball.style.top = `${y}px`;
             
             gravityBox.appendChild(ball);
             
             const ballObj = {
                 element: ball,
-                x: e.offsetX - size/2,
-                y: e.offsetY - size/2,
-                vx: (Math.random() - 0.5) * 10,
-                vy: (Math.random() - 0.5) * 10,
+                x: x,
+                y: y,
+                vx: (Math.random() - 0.5) * (rageMode ? 20 : 10),
+                vy: (Math.random() - 0.5) * (rageMode ? 20 : 10),
                 size: size
             };
             
             balls.push(ballObj);
+            
+            // Make balls clickable to remove them
+            ball.addEventListener('click', function(e) {
+                e.stopPropagation();
+                balls = balls.filter(b => b.element !== ball);
+                ball.remove();
+            });
         });
-        //just a forloop to get rid of balls
+        
         document.getElementById('clearBalls').addEventListener('click', function() {
             balls.forEach(ball => ball.element.remove());
             balls = [];
@@ -221,43 +497,55 @@
         
         function updateBalls() {
             balls.forEach(ball => {
-                // Apply gravity
-                ball.vy += gravity;
+                // Apply gravity (stronger in rage mode)
+                ball.vy += rageMode ? gravity * 2 : gravity;
                 
-                // Apply friction
-                ball.vx *= friction;
-                ball.vy *= friction;
+                // Apply friction (less in rage mode)
+                ball.vx *= rageMode ? friction * 0.95 : friction;
+                ball.vy *= rageMode ? friction * 0.95 : friction;
                 
                 // Update position
                 ball.x += ball.vx;
                 ball.y += ball.vy;
                 
                 // Check boundaries
-                if (ball.x + ball.size > gravityBox.offsetWidth) {
-                    ball.x = gravityBox.offsetWidth - ball.size;
-                    ball.vx *= -0.8;
+                const maxX = gravityBox.offsetWidth - ball.size;
+                const maxY = gravityBox.offsetHeight - ball.size;
+                
+                if (ball.x > maxX) {
+                    ball.x = maxX;
+                    ball.vx *= rageMode ? -1.2 : -0.8;
+                    playSound('bounce');
                 }
                 if (ball.x < 0) {
                     ball.x = 0;
-                    ball.vx *= -0.8;
+                    ball.vx *= rageMode ? -1.2 : -0.8;
+                    playSound('bounce');
                 }
-                if (ball.y + ball.size > gravityBox.offsetHeight) {
-                    ball.y = gravityBox.offsetHeight - ball.size;
-                    ball.vy *= -0.8;
+                if (ball.y > maxY) {
+                    ball.y = maxY;
+                    ball.vy *= rageMode ? -1.2 : -0.8;
+                    playSound('bounce');
                 }
                 if (ball.y < 0) {
                     ball.y = 0;
-                    ball.vy *= -0.8;
+                    ball.vy *= rageMode ? -1.2 : -0.8;
+                    playSound('bounce');
                 }
                 
                 // Update DOM
                 ball.element.style.left = `${ball.x}px`;
                 ball.element.style.top = `${ball.y}px`;
             });
+            
             requestAnimationFrame(updateBalls);
         }
         
         updateBalls();
+        
+        function playSound(type) {
+            // You can implement sound functionality here if needed
+        }
     </script>
 </body>
 </html>
